@@ -6,7 +6,7 @@ class Charity < ActiveRecord::Base
   has_many :causes, through: :causes_charities
   has_many :recipients
   has_many :needs
-
+  has_many :need_items, through: :needs
   has_many :user_roles
   has_many :users, through: :user_roles
   belongs_to :status
@@ -56,8 +56,14 @@ class Charity < ActiveRecord::Base
     end
   end
 
+  def donations
+    needs.map do |need|
+      need.donations
+    end.flatten
+  end
+
   def active_recipients
-    recipients.find_all { |recipient| !recipient.active_need_items.empty? }
+    recipients.find_all { |recipient| recipient.active }
   end
 
   def self.form_options(user)
