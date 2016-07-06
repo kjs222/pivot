@@ -8,7 +8,7 @@ class Charity < ActiveRecord::Base
 
   has_many :recipients
   has_many :needs
-
+  has_many :need_items, through: :needs
   has_many :user_roles
   has_many :users, through: :user_roles
   belongs_to :status
@@ -56,6 +56,12 @@ class Charity < ActiveRecord::Base
     else
       false
     end
+  end
+
+  def donations
+    needs.map do |need|
+      need.donations
+    end.flatten
   end
 
   def active_recipients

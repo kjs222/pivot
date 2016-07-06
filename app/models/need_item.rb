@@ -2,7 +2,7 @@ class NeedItem < ActiveRecord::Base
   belongs_to :need
   belongs_to :recipient
   has_many :donation_items
-
+  has_many :donations, through: :donation_items
   scope :retired, -> {where("deadline < ?", Date.today)}
   scope :active, -> {where("deadline > ?", Date.today)}
 
@@ -25,6 +25,10 @@ class NeedItem < ActiveRecord::Base
 
   def price
     need.price
+  end
+
+  def self.donations
+    joins(:donations).where("donation_id == ?", )
   end
 
   def charity
