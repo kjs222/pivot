@@ -28,14 +28,13 @@ class DonationsController < ApplicationController
       @cart_need_items.each do |need_item, quantity|
         @donation.donation_items.create(quantity: quantity, need_item: need_item, donation: @donation)
       end
-      flash[:success] = "Your donation, with ID #{@donation.id}, was received. Thank you!"
       DonationsMailer.donation_email({
         current_user: current_user,
         needs: @cart.get_need_list_from_cart,
         session: session,
         total_price: @cart.total_price,
         dashboard_url: dashboard_url}).deliver_now
-      session[:cart] = {}
+      session.delete :cart
       redirect_to donations_path
     else
       flash.now[:warning] = "Something went wrong with your donation confirmation."
