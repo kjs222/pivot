@@ -73,7 +73,7 @@ class Seed
     200.times do
       need = Need.find(Random.new.rand(1..500))
       recipient = Recipient.find(Random.new.rand(1..100))
-      NeedItem.create!(deadline: Faker::Date.forward(25), quantity: rand(1..20), recipient_id: recipient.id,
+      NeedItem.create!(deadline: Faker::Date.forward(365), quantity: rand(1..20), recipient_id: recipient.id,
       need_id: need.id)
     end
   end
